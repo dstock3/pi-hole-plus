@@ -6,8 +6,10 @@ const App = () => {
   const [logs, setLogs] = useState([]);
 
   useEffect(() => {
-    axios.get('http://localhost:3000/logs')
+    // enter the endoint of the pi-hole-plus API
+    axios.get('')
       .then(response => {
+        console.log(response.data)
         setLogs(response.data);
       })
       .catch(error => {
