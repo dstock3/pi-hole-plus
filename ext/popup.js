@@ -2,58 +2,33 @@ const mainSwitch = document.querySelector('.main-switch');
 const switchLabelContainer = document.querySelector('.switch-label-container');
 const switchContainer = document.querySelector('.switch-container');
 
-const disable = () => {
-  fetch('http://localhost:5000/disable')
-  .then(response => {
-    return response.json();
-  })
-  .then(data => {
-    console.log(data);
-  })
-  .catch(error => {
-    console.error(error);
-  });
-};
-
-const enable = () => {
-  fetch('http://localhost:5000/enable')
-  .then(response => {
-    return response.json();
-  })
-  .then(data => {
-    console.log(data);
-  })
-  .catch(error => {
-    console.error(error);
-  });
-};
+const toggleAPI = (status) =>
+  fetch(`http://localhost:5000/${status}`)
+    .then(response => {
+      return response.json();
+    })
+    .then(console.log)
+    .catch(console.error);
 
 const engageSwitch = (() => {
-
-
-  const status = 'enabled';
-  //hardcoded status for now
-  switchContainer.classList.add(status);
-  
-  let span = document.createElement('span');
-  span.classList.add(`${status}-indicator`);
-  span.textContent = status.charAt(0).toUpperCase() + status.slice(1);
-  
-  switchLabelContainer.appendChild(span);
+  fetch('http://localhost:5000/status')
+    .then(response => response.json())
+    .then(({ status }) => {
+      switchContainer.classList.add(status);
+      const span = document.createElement('span');
+      span.classList.add(`${status}-indicator`);
+      span.textContent = status.charAt(0).toUpperCase() + status.slice(1);
+      switchLabelContainer.appendChild(span);
+    })
+    .catch(console.error);
 })();
 
 const toggleSwitch = () => {
   let currentStatus = switchContainer.classList.contains('enabled') ? 'enabled' : 'disabled';
   let newStatus = currentStatus === 'enabled' ? 'disabled' : 'enabled';
 
-  if (newStatus === 'enabled') {
-    enable();
-  } else {
-    disable();
-  }
-  
-  switchContainer.classList.toggle(currentStatus);
-  switchContainer.classList.toggle(newStatus);
+  switchContainer.classList.remove(currentStatus);
+  switchContainer.classList.add(newStatus);
   
   switchLabelContainer.childNodes[1].remove();
   
@@ -62,6 +37,8 @@ const toggleSwitch = () => {
   span.textContent = newStatus.charAt(0).toUpperCase() + newStatus.slice(1);
   
   switchLabelContainer.appendChild(span);
+
+  toggleAPI(newStatus.slice(0, -1));
 };
 
 mainSwitch.addEventListener('click', toggleSwitch);
