@@ -1,38 +1,26 @@
 /* indicators */
 
-const req = async (query) => {
-  fetch(`http://localhost:5000/${query}`)
-    .then(response => {
-      if (!response.ok) {
-        throw new Error("Network response was not ok");
-      }
-      console.log(response)
-      return response.json();
-    })
-    .catch(error => console.error(error));
-};
-
-const updateTotalQueries = async () => {
-  const response = await fetch(`http://localhost:5000/queries`);
-  const totalQueries = await response.json();
+const updateIndicators = (summary) => {
   let totalQueriesContainer = document.querySelector('#total-queries');
-  totalQueriesContainer.innerHTML = totalQueries.length;
-};
+  totalQueriesContainer.textContent = summary.dns_queries_today;
 
-const updateBlockedQueries = async () => {
-  const response = await fetch(`http://localhost:5000/domain-count`);
-  const blockedQueries = await response.json();
-  console.log(blockedQueries)
   let blockedQueriesContainer = document.querySelector('#queries-blocked');
-  blockedQueriesContainer.innerHTML = blockedQueries.domains_being_blocked;
+  blockedQueriesContainer.textContent = summary.domains_being_blocked;
+
+  let percentageBlocked = document.querySelector('#per-blocked');
+  percentageBlocked.textContent = summary.ads_percentage_today;
+
+  let domainsBlocked = document.querySelector('#domains-blocked');
+  domainsBlocked.textContent = summary.ads_blocked_today;
+}
+
+const getSummary = async () => {
+  const response = await fetch(`http://localhost:5000/`);
+  const summary = await response.json();
+  updateIndicators(summary);
 };
 
-const updateAllIndicators = () => {
-  updateTotalQueries();
-  updateBlockedQueries();
-};
-
-updateAllIndicators(); // initial load
+getSummary();
 
 /* indicator container controls */
 let minimize = document.querySelector('.minimize');
