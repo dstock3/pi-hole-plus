@@ -113,6 +113,13 @@ h2 > span {
 }
 
 /* enable/disable switch */
+
+.control-container {
+    width: 100%;
+    display: flex;
+    justify-content: flex-start;
+}
+
 .enable-control {
     margin-top: 5px;
 }
@@ -157,6 +164,11 @@ h2 > span {
 
 .switch-label-container {
     margin-top: 10px;
+}
+
+.enabled-indicator, .disabled-indicator {
+    font-size: .85em;
+    font-weight: bold;
 }
 
 .enabled-indicator {
