@@ -1,17 +1,19 @@
 /* indicators */
 
 const updateIndicators = (summary) => {
+  let num = new Intl.NumberFormat();
+
   let totalQueriesContainer = document.querySelector('#total-queries');
-  totalQueriesContainer.textContent = summary.dns_queries_today;
+  totalQueriesContainer.textContent = num.format(summary.dns_queries_today);
 
   let blockedQueriesContainer = document.querySelector('#queries-blocked');
-  blockedQueriesContainer.textContent = summary.domains_being_blocked;
+  blockedQueriesContainer.textContent = num.format(summary.domains_being_blocked);
 
   let percentageBlocked = document.querySelector('#per-blocked');
-  percentageBlocked.textContent = summary.ads_percentage_today;
+  percentageBlocked.textContent = Math.round(num.format(summary.ads_percentage_today)) + '%';
 
   let domainsBlocked = document.querySelector('#domains-blocked');
-  domainsBlocked.textContent = summary.ads_blocked_today;
+  domainsBlocked.textContent = num.format(summary.ads_blocked_today);
 }
 
 const getSummary = async () => {
@@ -21,6 +23,10 @@ const getSummary = async () => {
 };
 
 getSummary();
+
+setInterval(() => {
+  getSummary();
+}, 30000);
 
 /* indicator container controls */
 let minimize = document.querySelector('.minimize');
