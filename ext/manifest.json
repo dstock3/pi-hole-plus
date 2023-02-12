@@ -1,6 +1,6 @@
 {
     "manifest_version": 2,
-    "name": "Manual Whitelist Extension",
+    "name": "Pi-Hole Plus",
     "description": "A Chrome extension that enables users to manually whitelist false positives",
     "version": "1.0.0",
   

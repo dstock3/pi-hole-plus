@@ -1,20 +1,17 @@
 /* indicators */
 
+const updateInterval = 30000;
+
+const num = new Intl.NumberFormat();
+
 const updateIndicators = (summary) => {
-  let num = new Intl.NumberFormat();
-
-  let totalQueriesContainer = document.querySelector('#total-queries');
-  totalQueriesContainer.textContent = num.format(summary.dns_queries_today);
-
-  let blockedQueriesContainer = document.querySelector('#queries-blocked');
-  blockedQueriesContainer.textContent = num.format(summary.domains_being_blocked);
-
-  let percentageBlocked = document.querySelector('#per-blocked');
-  percentageBlocked.textContent = Math.round(num.format(summary.ads_percentage_today)) + '%';
-
-  let domainsBlocked = document.querySelector('#domains-blocked');
-  domainsBlocked.textContent = num.format(summary.ads_blocked_today);
-}
+  const select = (id) => document.querySelector(`#${id}`);
+  
+  select('total-queries').textContent = num.format(summary.dns_queries_today);
+  select('queries-blocked').textContent = num.format(summary.ads_blocked_today);
+  select('per-blocked').textContent = `${Math.round(summary.ads_percentage_today)}%`;
+  select('domains-blocked').textContent = num.format(summary.domains_being_blocked); 
+};
 
 const getSummary = async () => {
   const response = await fetch(`http://localhost:5000/`);
@@ -24,14 +21,12 @@ const getSummary = async () => {
 
 getSummary();
 
-setInterval(() => {
-  getSummary();
-}, 30000);
+setInterval(getSummary, updateInterval);
 
 /* indicator container controls */
+
 let minimize = document.querySelector('.minimize');
 let indicators = Array.from(document.querySelectorAll('.ind'));
-indicators.unshift(document.querySelector('.line'))
 
 minimize.addEventListener('click', () => {
   indicators.forEach((element, index) => {
@@ -39,7 +34,7 @@ minimize.addEventListener('click', () => {
     if (element.classList.contains('hide')) {
       element.style.marginBottom = '0';
     } else {
-      if (index < 3) {
+      if (index < 2) {
         element.style.marginBottom = '5px';
       }
     }
