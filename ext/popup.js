@@ -1,3 +1,15 @@
+/* indicators */
+
+const req = (query) => 
+  fetch(`http://localhost:5000/${query}`)
+    .then(response => response.json())
+    .then(console.log)
+    .catch(console.error);
+
+
+
+/* enable/disable pi-hole */
+
 const mainSwitch = document.querySelector('.main-switch');
 const switchLabelContainer = document.querySelector('.switch-label-container');
 const switchContainer = document.querySelector('.switch-container');
