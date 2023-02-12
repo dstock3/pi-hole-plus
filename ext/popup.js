@@ -1,12 +1,38 @@
 /* indicators */
 
-const req = (query) => 
+const req = async (query) => {
   fetch(`http://localhost:5000/${query}`)
-    .then(response => response.json())
-    .then(console.log)
-    .catch(console.error);
+    .then(response => {
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
+      }
+      console.log(response)
+      return response.json();
+    })
+    .catch(error => console.error(error));
+};
 
+const updateTotalQueries = async () => {
+  const response = await fetch(`http://localhost:5000/queries`);
+  const totalQueries = await response.json();
+  let totalQueriesContainer = document.querySelector('#total-queries');
+  totalQueriesContainer.innerHTML = totalQueries.length;
+};
 
+const updateBlockedQueries = async () => {
+  const response = await fetch(`http://localhost:5000/domain-count`);
+  const blockedQueries = await response.json();
+  console.log(blockedQueries)
+  let blockedQueriesContainer = document.querySelector('#queries-blocked');
+  blockedQueriesContainer.innerHTML = blockedQueries.domains_being_blocked;
+};
+
+const updateAllIndicators = () => {
+  updateTotalQueries();
+  updateBlockedQueries();
+};
+
+updateAllIndicators(); // initial load
 
 /* enable/disable pi-hole */
 
