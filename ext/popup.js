@@ -34,6 +34,26 @@ const updateAllIndicators = () => {
 
 updateAllIndicators(); // initial load
 
+/* indicator container controls */
+let minimize = document.querySelector('.minimize');
+let indicators = Array.from(document.querySelectorAll('.ind'));
+indicators.unshift(document.querySelector('.line'))
+
+minimize.addEventListener('click', () => {
+  indicators.forEach((element, index) => {
+    element.classList.toggle('hide');
+    if (element.classList.contains('hide')) {
+      element.style.marginBottom = '0';
+    } else {
+      if (index < 3) {
+        element.style.marginBottom = '5px';
+      }
+    }
+  });
+
+  minimize.textContent = minimize.textContent === '-' ? '+' : '-';
+});
+
 /* enable/disable pi-hole */
 
 const mainSwitch = document.querySelector('.main-switch');
