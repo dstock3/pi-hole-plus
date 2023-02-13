@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="style.css">
+  </head>
+  <body>
+    <main class="ext-container">
+      <div class="main-indicators">
+        <div class="ind-control">
+          <h2>
+            <span>Pi-</span>hole Plus
+          </h2>
+          <div class="minimize">-</div>
+        </div>
+
+        <div class="ind queries-container">
+          <div class="ind-label">Total Queries</div>
+          <div class="ind-value" id="total-queries"></div>
+        </div>
+
+        <div class="ind queries-blocked-container">
+          <div class="ind-label">Queries Blocked</div>
+          <div class="ind-value" id="queries-blocked"></div>
+        </div>
+
+        <div class="ind per-blocked-container">
+          <div class="ind-label">Percentage Blocked</div>
+          <div class="ind-value" id="per-blocked"></div>
+        </div>
+
+        <div class="ind domains-blocked-container">
+          <div class="ind-label">Domains on Adlists</div>
+          <div class="ind-value" id="domains-blocked"></div>
+        </div>
+      </div>
+      <div class="control-container">
+        <div class="enable-control">
+          <div class="main-switch">
+            <div class="switch-container enabled">
+              <div class="switch-handle">
+              </div>
+              <div class="switch-body">
+              </div>
+            </div>
+
+            <div class="switch-label-container">
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+    </main>
+    <script src="popup.js"></script>
+  </body>
+</html>
