@@ -4,13 +4,30 @@ const updateInterval = 30000;
 
 const num = new Intl.NumberFormat();
 
+const hideIndicators = () => {
+  Array.from(document.querySelectorAll('.ind')).forEach((element, index) => {
+    element.classList.toggle('hide');
+    if (element.classList.contains('hide')) {
+      element.style.marginBottom = '0';
+    } else {
+      if (index < 2) {
+        element.style.marginBottom = '5px';
+      }
+    }
+  });
+}
+
 const updateIndicators = (summary) => {
-  const select = (id) => document.querySelector(`#${id}`);
+  if ('error' in summary) {
+    hideIndicators()
+  } else {
+    const select = (id) => document.querySelector(`#${id}`);
   
-  select('total-queries').textContent = num.format(summary.dns_queries_today);
-  select('queries-blocked').textContent = num.format(summary.ads_blocked_today);
-  select('per-blocked').textContent = `${Math.round(summary.ads_percentage_today)}%`;
-  select('domains-blocked').textContent = num.format(summary.domains_being_blocked); 
+    select('total-queries').textContent = num.format(summary.dns_queries_today);
+    select('queries-blocked').textContent = num.format(summary.ads_blocked_today);
+    select('per-blocked').textContent = `${Math.round(summary.ads_percentage_today)}%`;
+    select('domains-blocked').textContent = num.format(summary.domains_being_blocked); 
+  }
 };
 
 const getSummary = async () => {
@@ -26,19 +43,10 @@ setInterval(getSummary, updateInterval);
 /* indicator container controls */
 
 let minimize = document.querySelector('.minimize');
-let indicators = Array.from(document.querySelectorAll('.ind'));
+
 
 minimize.addEventListener('click', () => {
-  indicators.forEach((element, index) => {
-    element.classList.toggle('hide');
-    if (element.classList.contains('hide')) {
-      element.style.marginBottom = '0';
-    } else {
-      if (index < 2) {
-        element.style.marginBottom = '5px';
-      }
-    }
-  });
+  hideIndicators()
 
   minimize.textContent = minimize.textContent === '-' ? '+' : '-';
 });
