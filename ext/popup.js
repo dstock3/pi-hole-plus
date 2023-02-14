@@ -1,10 +1,9 @@
 /* indicators */
-
 const updateInterval = 30000;
 
 const num = new Intl.NumberFormat();
 
-const hideIndicators = () => {
+const toggleIndicators = () => {
   Array.from(document.querySelectorAll('.ind')).forEach((element, index) => {
     element.classList.toggle('hide');
     if (element.classList.contains('hide')) {
@@ -17,10 +16,22 @@ const hideIndicators = () => {
   });
 }
 
+const errorContainer = document.querySelector('.error-container');
+
+const displayError = (error) => {
+  errorContainer.textContent = error;
+  errorContainer.classList.remove('hide');
+};
+
+const removeError = () => {
+  errorContainer.textContent = '';
+  errorContainer.classList.add('hide');
+};
+
 const updateIndicators = (summary) => {
-  console.log(summary)
-  if ('error' in summary) {
-    hideIndicators()
+  if (('error' in summary) | (summary === undefined)) {
+    toggleIndicators()
+    displayError(summary.error);
   } else {
     const select = (id) => document.querySelector(`#${id}`);
   
@@ -32,9 +43,22 @@ const updateIndicators = (summary) => {
 };
 
 const getSummary = async () => {
-  const response = await fetch(`http://localhost:5000/`);
+  const response = await fetch(`http://localhost:5000/`)
+  .catch(error => {
+    console.error(error);
+    displayError(error);
+  });
   const summary = await response.json();
-  updateIndicators(summary);
+  console.log(summary)
+  if (summary.length !== 0) {
+    removeError();
+    updateIndicators(summary);
+  } else {
+    toggleIndicators();
+    displayError("No data available.");
+
+  }
+  
 };
 
 getSummary();
@@ -45,9 +69,8 @@ setInterval(getSummary, updateInterval);
 
 let minimize = document.querySelector('.minimize');
 
-
 minimize.addEventListener('click', () => {
-  hideIndicators()
+  toggleIndicators()
 
   minimize.textContent = minimize.textContent === '-' ? '+' : '-';
 });
@@ -61,27 +84,40 @@ const switchContainer = document.querySelector('.switch-container');
 const toggleAPI = (status) =>
   fetch(`http://localhost:5000/${status}`)
     .then(response => {
+      removeError();
       return response.json();
     })
     .then(console.log)
-    .catch(console.error);
+    .catch(error => {
+      console.error(error);
+      displayError(error);
+    });
 
 const engageSwitch = (() => {
   fetch('http://localhost:5000/status')
     .then(response => response.json())
     .then(({ status }) => {
-      switchContainer.classList.add(status);
-      const span = document.createElement('span');
-      span.classList.add(`${status}-indicator`);
-      span.textContent = status.charAt(0).toUpperCase() + status.slice(1);
-      switchLabelContainer.appendChild(span);
+      if (status) {
+        switchContainer.classList.add(status);
+        const span = document.createElement('span');
+        span.classList.add(`${status}-indicator`);
+        span.textContent = status.charAt(0).toUpperCase() + status.slice(1);
+        switchLabelContainer.appendChild(span);
+        removeError();
+      }
     })
-    .catch(console.error);
+    .catch(error => {
+      console.error(error);
+      toggleIndicators();
+      displayError(error);  
+    });
+
 })();
 
 const toggleSwitch = () => {
   let currentStatus = switchContainer.classList.contains('enabled') ? 'enabled' : 'disabled';
-  let newStatus = currentStatus === 'enabled' ? 'disabled' : 'enabled';
+  let newStatus
+  if (currentStatus) newStatus === 'enabled' ? 'disabled' : 'enabled';
 
   switchContainer.classList.remove(currentStatus);
   switchContainer.classList.add(newStatus);
@@ -89,9 +125,12 @@ const toggleSwitch = () => {
   switchLabelContainer.childNodes[1].remove();
   
   let span = document.createElement('span');
-  span.classList.add(`${newStatus}-indicator`);
-  span.textContent = newStatus.charAt(0).toUpperCase() + newStatus.slice(1);
-  
+
+  if (newStatus) {
+    span.classList.add(`${newStatus}-indicator`);
+    span.textContent = newStatus.charAt(0).toUpperCase() + newStatus.slice(1);
+  }
+
   switchLabelContainer.appendChild(span);
 
   toggleAPI(newStatus.slice(0, -1));
