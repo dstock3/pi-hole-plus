@@ -190,3 +190,12 @@ h2 > span {
     transform: translateX(0px);
 }
 
+.error-container {
+    background-color: #dd4b39;
+    color: white;
+    padding: 5px;
+    border-radius: 5px;
+    box-shadow: 5px 5px 10px #0101019d;
+    margin-bottom: 5px;
+    text-shadow: 2px 2px 2px #01010160;
+}
