@@ -4,17 +4,12 @@ const updateInterval = 30000;
 const num = new Intl.NumberFormat();
 
 const toggleIndicators = () => {
-  Array.from(document.querySelectorAll('.ind')).forEach((element, index) => {
+  document.querySelectorAll('.ind').forEach((element, index) => {
     element.classList.toggle('hide');
-    if (element.classList.contains('hide')) {
-      element.style.marginBottom = '0';
-    } else {
-      if (index < 2) {
-        element.style.marginBottom = '5px';
-      }
-    }
+    const margin = element.classList.contains('hide') ? '0' : (index < 2 ? '5px' : '');
+    element.style.marginBottom = margin;
   });
-}
+};
 
 const errorContainer = document.querySelector('.error-container');
 
