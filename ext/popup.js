@@ -29,7 +29,7 @@ const removeError = () => {
 };
 
 const updateIndicators = (summary) => {
-  if (('error' in summary) | (summary === undefined)) {
+  if (('error' in summary) || (summary === undefined)) {
     toggleIndicators()
     displayError(summary.error);
   } else {
