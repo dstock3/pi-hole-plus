@@ -53,9 +53,7 @@ const getSummary = async () => {
   } else {
     toggleIndicators();
     displayError("Error: Could not establish a connection to the pi-hole API. Please make sure that a valid API key has been provided and check if the API key is correct. If the issue persists, please contact your system administrator.");
-
   }
-  
 };
 
 getSummary();
@@ -79,9 +77,9 @@ const switchLabelContainer = document.querySelector('.switch-label-container');
 const switchContainer = document.querySelector('.switch-container');
 
 async function toggleAPI(currentStatus) {
+  console.log(currentStatus)
   try {
-    const newStatus = toggleSwitch(currentStatus);
-    const response = await fetch(`https://api.example.com/switch?status=${newStatus}`);
+    const response = await fetch(`http://localhost:5000/${currentStatus}`);
     const json = await response.json();
     return json;
   } catch (error) {
@@ -112,23 +110,17 @@ const engageSwitch = (() => {
 
 const toggleSwitch = () => {
   let currentStatus = switchContainer.classList.contains('enabled') ? 'enabled' : 'disabled';
-  let newStatus
-  if (currentStatus) newStatus === 'enabled' ? 'disabled' : 'enabled';
-
+  let newStatus = currentStatus === 'enabled' ? 'disabled' : 'enabled';
   switchContainer.classList.remove(currentStatus);
   switchContainer.classList.add(newStatus);
   
   switchLabelContainer.childNodes[1].remove();
   
   let span = document.createElement('span');
-
-  if (newStatus) {
-    span.classList.add(`${newStatus}-indicator`);
-    span.textContent = newStatus.charAt(0).toUpperCase() + newStatus.slice(1);
-  }
-
+  span.classList.add(`${newStatus}-indicator`);
+  span.textContent = newStatus.charAt(0).toUpperCase() + newStatus.slice(1);
+  
   switchLabelContainer.appendChild(span);
-
   toggleAPI(newStatus.slice(0, -1));
 };
 
