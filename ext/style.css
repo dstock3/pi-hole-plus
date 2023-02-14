@@ -1,8 +1,8 @@
 /* basic styling */
 
 body {
-    width: 200px;
-    height: 250px;
+    width: 250px;
+    height: fit-content;
     color: rgb(200, 195, 188);
     background-color: rgb(24, 26, 27);
     margin: 5px;
@@ -63,6 +63,7 @@ h2 > span {
 
 .ind {
     width: 48%;
+    height: 55px;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -71,6 +72,7 @@ h2 > span {
     box-shadow: 5px 5px 10px #0101019d;
     color: #e8e6e3;
     font-weight: bold;
+    text-shadow: 2px 2px 2px #01010160;
 }
 
 .hide {
@@ -164,6 +166,7 @@ h2 > span {
 
 .switch-label-container {
     margin-top: 10px;
+    text-shadow: 2px 2px 2px #01010160;
 }
 
 .enabled-indicator, .disabled-indicator {

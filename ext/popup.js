@@ -18,6 +18,7 @@ const hideIndicators = () => {
 }
 
 const updateIndicators = (summary) => {
+  console.log(summary)
   if ('error' in summary) {
     hideIndicators()
   } else {
