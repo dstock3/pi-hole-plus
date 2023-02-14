@@ -81,17 +81,16 @@ const mainSwitch = document.querySelector('.main-switch');
 const switchLabelContainer = document.querySelector('.switch-label-container');
 const switchContainer = document.querySelector('.switch-container');
 
-const toggleAPI = (status) =>
-  fetch(`http://localhost:5000/${status}`)
-    .then(response => {
-      removeError();
-      return response.json();
-    })
-    .then(console.log)
-    .catch(error => {
-      console.error(error);
-      displayError(error);
-    });
+async function toggleAPI(currentStatus) {
+  try {
+    const newStatus = toggleSwitch(currentStatus);
+    const response = await fetch(`https://api.example.com/switch?status=${newStatus}`);
+    const json = await response.json();
+    return json;
+  } catch (error) {
+    console.error(error);
+  }
+}
 
 const engageSwitch = (() => {
   fetch('http://localhost:5000/status')
