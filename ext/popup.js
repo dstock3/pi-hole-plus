@@ -50,7 +50,7 @@ const getSummary = async () => {
     updateIndicators(summary);
   } else {
     toggleIndicators();
-    displayError("No data available.");
+    displayError("Error: Could not establish a connection to the pi-hole API. Please make sure that a valid API key has been provided and check if the API key is correct. If the issue persists, please contact your system administrator.");
 
   }
   
