@@ -1,7 +1,6 @@
 import { displayError } from "./error.js";
 
 export const toggleIndicators = () => {
-    
     document.querySelectorAll('.ind').forEach((element, index) => {
         element.classList.toggle('hide');
         const margin = element.classList.contains('hide') ? '0' : (index < 2 ? '5px' : '');

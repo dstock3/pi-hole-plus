@@ -17,4 +17,3 @@ export const getSummary = async () => {
     displayError(error);
   }
 };
-

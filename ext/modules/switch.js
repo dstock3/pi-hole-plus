@@ -5,6 +5,20 @@ import { displayError, removeError } from './error.js';
 const switchContainer = document.querySelector('.switch-container');
 const switchLabelContainer = document.querySelector('.switch-label-container');
 
+const updateSwitchState = (newStatus) => {
+  const currentStatus = switchContainer.classList.contains('enabled') ? 'enabled' : 'disabled';
+  switchContainer.classList.remove(currentStatus);
+  switchContainer.classList.add(newStatus);
+
+  switchLabelContainer.childNodes[1].remove();
+
+  const span = document.createElement('span');
+  span.classList.add(`${newStatus}-indicator`);
+  span.textContent = newStatus.charAt(0).toUpperCase() + newStatus.slice(1);
+
+  switchLabelContainer.appendChild(span);
+};
+
 async function toggleAPI(currentStatus) {
   try {
     const response = await fetch(`http://localhost:5000/${currentStatus}`);
@@ -31,26 +45,22 @@ export const engageSwitch = (() => {
     .catch(error => {
       console.error(error);
       toggleIndicators();
-      displayError(error);  
+      displayError(error);
     });
 })();
 
-export const toggleSwitch = () => {
-  let currentStatus = switchContainer.classList.contains('enabled') ? 'enabled' : 'disabled';
-  let newStatus = currentStatus === 'enabled' ? 'disabled' : 'enabled';
-  switchContainer.classList.remove(currentStatus);
-  switchContainer.classList.add(newStatus);
-  
-  switchLabelContainer.childNodes[1].remove();
-  
-  let span = document.createElement('span');
-  span.classList.add(`${newStatus}-indicator`);
-  span.textContent = newStatus.charAt(0).toUpperCase() + newStatus.slice(1);
-  
-  switchLabelContainer.appendChild(span);
-  toggleAPI(newStatus.slice(0, -1));
+export const toggleSwitch = async () => {
+  const currentStatus = switchContainer.classList.contains('enabled') ? 'enabled' : 'disabled';
+  const newStatus = currentStatus === 'enabled' ? 'disabled' : 'enabled';
+  updateSwitchState(newStatus);
+
+  try {
+    await toggleAPI(newStatus.slice(0, -1));
+  } catch (error) {
+    console.error(error);
+    toggleIndicators();
+    displayError(error);
+    updateSwitchState(currentStatus);
+  }
 };
-
-document.querySelector('.main-switch').addEventListener('click', toggleSwitch);
-
 
