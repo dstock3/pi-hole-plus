@@ -11,14 +11,14 @@ const runSpeedTest = async () => {
 export const updateSpeedTest = async () => {
     const results = await runSpeedTest();
     const downloadSpeed = document.querySelector('#download-speed');
-    const uploadSpeed = document.querySelector('#upload-speed');
+    const rating = document.querySelector('#rating');
   
     if (results) {
-      downloadSpeed.innerHTML = `Download Speed: ${results.speed} Mbps`;
-      uploadSpeed.innerHTML = `Rating: ${results.rating}`;
+      downloadSpeed.textContent = `Download Speed: ${results.speed}`;
+      rating.textContent = `Rating: ${results.rating}`;
     } else {
-      downloadSpeed.innerHTML = 'Could not perform speed test';
-      uploadSpeed.innerHTML = '';
+      downloadSpeed.textContent = 'Could not perform speed test';
+      rating.textContent = '';
     }
 };
   
