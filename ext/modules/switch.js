@@ -19,20 +19,40 @@ const updateSwitchState = (newStatus) => {
   switchLabelContainer.appendChild(span);
 };
 
+const portsToTry = [5000, 3000];
+
 async function toggleAPI(currentStatus) {
-  try {
-    const response = await fetch(`http://localhost:5000/${currentStatus}`);
-    const json = await response.json();
-    return json;
-  } catch (error) {
-    console.error(error);
+  let responseJson;
+  for (const port of portsToTry) {
+    try {
+      const response = await fetch(`http://localhost:${port}/${currentStatus}`);
+      responseJson = await response.json();
+      break;
+    } catch (error) {
+      console.error(`Failed to connect to port ${port}: ${error}`);
+    }
   }
+  if (!responseJson) {
+    throw new Error(`Failed to connect to any of the following ports: ${portsToTry.join(', ')}`);
+  }
+  return responseJson;
 }
 
 export const engageSwitch = (() => {
-  fetch('http://localhost:5000/status')
-    .then(response => response.json())
-    .then(({ status }) => {
+  const tryPort = async (port) => {
+    try {
+      const response = await fetch(`http://localhost:${port}/status`);
+      const { status } = await response.json();
+      return status;
+    } catch (error) {
+      console.error(`Failed to connect to port ${port}: ${error}`);
+      return null;
+    }
+  };
+
+  const tryPortsInOrder = async () => {
+    for (const port of portsToTry) {
+      const status = await tryPort(port);
       if (status) {
         switchContainer.classList.add(status);
         const span = document.createElement('span');
@@ -40,13 +60,12 @@ export const engageSwitch = (() => {
         span.textContent = status.charAt(0).toUpperCase() + status.slice(1);
         switchLabelContainer.appendChild(span);
         removeError();
+        break;
       }
-    })
-    .catch(error => {
-      console.error(error);
-      toggleIndicators();
-      displayError(error);
-    });
+    }
+  };
+
+  tryPortsInOrder();
 })();
 
 export const toggleSwitch = async () => {

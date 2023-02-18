@@ -1,14 +1,17 @@
 import { showLoading, removeLoading } from './loading.js';
 
 const runSpeedTest = async () => {
+  showLoading(document.querySelector('.speedtest'));
+  const portsToTry = [5000, 3000];
+  for (const port of portsToTry) {
     try {
-      showLoading(document.querySelector('.speedtest'));
-      const response = await fetch('http://localhost:5000/speedtest');
+      const response = await fetch(`http://localhost:${port}/speedtest`);
       const data = await response.json();
       return data;
     } catch (error) {
-      console.error(error);
+      console.error(`Failed to connect to port ${port}: ${error}`);
     }
+  }
 };
 
 export const updateSpeedTest = async () => {

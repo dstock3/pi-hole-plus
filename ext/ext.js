@@ -3,7 +3,7 @@ import { updateSpeedTest } from '/modules/speedtest.js';
 import { toggleSwitch } from '/modules/switch.js';
 import { addMinHandler } from '/modules/minimize.js';
 
-const updateInterval = 5000;
+const updateInterval = 5000; // 5 seconds
 
 getSummary();
 updateSpeedTest();
