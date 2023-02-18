@@ -14,7 +14,7 @@ export const updateSpeedTest = async () => {
   const rating = document.querySelector('#rating');
 
   if (results && results.speed && results.rating) {
-    downloadSpeed.textContent = `Download Speed: ${results.speed}`;
+    downloadSpeed.textContent = `Download: ${results.speed}`;
     rating.textContent = `Rating: ${results.rating}`;
     
     switch (results.rating) {

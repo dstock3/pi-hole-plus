@@ -207,7 +207,7 @@ h2 > span {
     width: 66%;
     display: flex;
     flex-direction: column;
-    align-items: flex-start;
+    align-items: center;
     background-color: rgb(55, 60, 62);
     border-radius: 5px;
 }
@@ -215,14 +215,14 @@ h2 > span {
 .speedtest h3 {
     margin-block-start: 5px;
     margin-block-end: 7px;
-    align-self: center;
+
 }
 
-.speedtest > div {
-    margin-left: 3px;
-    text-align: left;
+#rating {
+    font-size: 1.15em;
+    font-weight: bold;
+    margin-top: 5px;
 }
-
 
 
 
