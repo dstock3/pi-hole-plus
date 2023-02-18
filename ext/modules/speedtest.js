@@ -1,5 +1,8 @@
+import { showLoading, removeLoading } from './loading.js';
+
 const runSpeedTest = async () => {
     try {
+      showLoading(document.querySelector('.speedtest'));
       const response = await fetch('http://localhost:5000/speedtest');
       const data = await response.json();
       return data;
@@ -14,6 +17,7 @@ export const updateSpeedTest = async () => {
   const rating = document.querySelector('#rating');
 
   if (results && results.speed && results.rating) {
+    removeLoading(document.querySelector('.speedtest'));
     downloadSpeed.textContent = `Download: ${results.speed}`;
     rating.textContent = `Rating: ${results.rating}`;
     
