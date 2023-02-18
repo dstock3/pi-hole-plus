@@ -1,22 +1,14 @@
-import { toggleIndicators } from '/modules/indicators.js';
 import { getSummary } from '/modules/summary.js';
-import { toggleSwitch } from '/modules/switch.js';
 import { updateSpeedTest } from '/modules/speedtest.js';
+import { toggleSwitch } from '/modules/switch.js';
+import { addMinHandler } from '/modules/minimize.js';
 
 const updateInterval = 5000;
 
 getSummary();
 updateSpeedTest();
 setInterval(getSummary, updateInterval);
-
-const handleMinimizeClick = () => {
-  toggleIndicators();
-  const minimize = document.querySelector('.minimize');
-  minimize.textContent = minimize.textContent === '-' ? '+' : '-';
-};
-
-const minimize = document.querySelector('.minimize');
-minimize.addEventListener('click', handleMinimizeClick);
+addMinHandler();
 
 const mainSwitch = document.querySelector('.main-switch');
 mainSwitch.addEventListener('click', toggleSwitch);
